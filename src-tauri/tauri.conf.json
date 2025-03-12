@@ -12,9 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "courier-mail",
-        "width": 800,
-        "height": 600,
+        "title": "Courier Mail",
         "transparent": true
       }
     ],
