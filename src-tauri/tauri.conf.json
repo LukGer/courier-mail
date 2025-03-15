@@ -13,7 +13,9 @@
     "windows": [
       {
         "title": "Courier Mail",
-        "transparent": true
+        "transparent": true,
+        "maximized": true,
+        "hiddenTitle": true
       }
     ],
     "macOSPrivateApi": true,

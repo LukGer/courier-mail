@@ -1,0 +1,1 @@
+<p>Inbox page</p>
