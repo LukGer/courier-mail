@@ -19,5 +19,8 @@
   "packageManager": "bun@1.2.2",
   "workspaces": [
     "apps/*"
+  ],
+  "trustedDependencies": [
+    "@clerk/shared"
   ]
 }
