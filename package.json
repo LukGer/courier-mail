@@ -3,12 +3,13 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "check-types": "turbo run check-types",
     "dev": "turbo run start",
-    "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "lint": "turbo run lint"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "4.20250313.0",
     "prettier": "^3.5.3",
     "turbo": "^2.4.4",
     "typescript": "5.8.2"
@@ -21,6 +22,13 @@
     "apps/*"
   ],
   "trustedDependencies": [
-    "@clerk/shared"
-  ]
+    "@clerk/shared",
+    "aws-sdk",
+    "esbuild",
+    "sharp",
+    "workerd"
+  ],
+  "dependencies": {
+    "sst": "3.9.39"
+  }
 }

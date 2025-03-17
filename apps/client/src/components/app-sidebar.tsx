@@ -1,5 +1,7 @@
+"use client";
+
 import { EmailLabel } from "@/types";
-import { Link } from "@tanstack/react-router";
+import { Link, LinkProps } from "@tanstack/react-router";
 import {
   AlertCircleIcon,
   ClockIcon,
@@ -12,9 +14,11 @@ import {
   PlaneTakeoffIcon,
   StarIcon,
 } from "lucide-react";
+import { NavUser } from "./nav-user";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -25,45 +29,49 @@ import {
 } from "./ui/sidebar";
 
 export default function AppSidebar({ labels }: { labels: EmailLabel[] }) {
-  const items = [
+  const items: {
+    title: string;
+    url: LinkProps["to"];
+    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  }[] = [
     {
       title: "Inbox",
-      url: "/inbox",
+      url: "/mail/inbox",
       icon: InboxIcon,
     },
     {
       title: "Starred",
-      url: "/starred",
+      url: "/mail/starred",
       icon: StarIcon,
     },
     {
       title: "Snoozed",
-      url: "/snoozed",
+      url: "/mail/snoozed",
       icon: ClockIcon,
     },
     {
       title: "Important",
-      url: "/important",
+      url: "/mail/important",
       icon: DiamondIcon,
     },
     {
       title: "Sent",
-      url: "/sent",
+      url: "/mail/sent",
       icon: PlaneTakeoffIcon,
     },
     {
       title: "Drafts",
-      url: "/drafts",
+      url: "/mail/drafts",
       icon: EditIcon,
     },
     {
       title: "Spam",
-      url: "/spam",
+      url: "/mail/spam",
       icon: AlertCircleIcon,
     },
     {
       title: "Login",
-      url: "/login",
+      url: "/signin",
       icon: LogInIcon,
     },
   ];
@@ -112,7 +120,7 @@ export default function AppSidebar({ labels }: { labels: EmailLabel[] }) {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem>
+                <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link to={item.url}>
                       <item.icon />
@@ -129,7 +137,7 @@ export default function AppSidebar({ labels }: { labels: EmailLabel[] }) {
           <SidebarGroupContent>
             <SidebarMenu>
               {labels.map((label) => (
-                <SidebarMenuItem>
+                <SidebarMenuItem key={label.id}>
                   <SidebarMenuButton asChild>
                     <Link
                       to="."
@@ -150,6 +158,9 @@ export default function AppSidebar({ labels }: { labels: EmailLabel[] }) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <NavUser />
+      </SidebarFooter>
     </Sidebar>
   );
 }

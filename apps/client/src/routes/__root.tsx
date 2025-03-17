@@ -13,7 +13,7 @@ export const Route = createRootRouteWithContext<CourierRouterContext>()({
     return (
       <>
         <Outlet />
-        <TanStackRouterDevtools />
+        <TanStackRouterDevtools position="bottom-right" />
       </>
     );
   },

@@ -1,6 +1,8 @@
+import { authenticatedGuard } from "@/lib/auth";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/mail/inbox")({
+  beforeLoad: ({ context }) => authenticatedGuard(context),
   component: Index,
 });
 

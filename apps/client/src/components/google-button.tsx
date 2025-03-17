@@ -1,14 +1,20 @@
-import { useClerk } from "@clerk/clerk-react";
+import { useSignIn } from "@clerk/clerk-react";
 import { Button } from "./ui/button";
 
 export default function GoogleButton() {
-  const clerk = useClerk();
+  const { signIn, isLoaded } = useSignIn();
 
   const signInWithGoogle = async () => {
+    if (!isLoaded) {
+      return;
+    }
+
     try {
-      await clerk.openSignUp({
-        redirectUrl: "/",
-        fallbackRedirectUrl: "/",
+      // Start the OAuth flow
+      await signIn.authenticateWithRedirect({
+        strategy: "oauth_google",
+        redirectUrl: "/sso-callback",
+        redirectUrlComplete: "/",
       });
     } catch (error) {
       console.error("Error signing in with Google:", error);

@@ -1,6 +1,11 @@
 import { createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
+export interface CourierRouterContext {
+  isSignedIn: boolean;
+  auth?: any;
+}
+
 const router = createRouter({
   routeTree,
   context: {

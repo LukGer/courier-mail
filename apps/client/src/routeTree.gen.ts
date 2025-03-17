@@ -12,10 +12,11 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as TosImport } from './routes/tos'
+import { Route as SsoCallbackImport } from './routes/sso-callback'
 import { Route as SignupImport } from './routes/signup'
-import { Route as LoginImport } from './routes/login'
+import { Route as SigninImport } from './routes/signin'
+import { Route as MailImport } from './routes/mail'
 import { Route as IndexImport } from './routes/index'
-import { Route as MailIndexImport } from './routes/mail/index'
 import { Route as MailInboxImport } from './routes/mail/inbox'
 
 // Create/Update Routes
@@ -26,15 +27,27 @@ const TosRoute = TosImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const SsoCallbackRoute = SsoCallbackImport.update({
+  id: '/sso-callback',
+  path: '/sso-callback',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const SignupRoute = SignupImport.update({
   id: '/signup',
   path: '/signup',
   getParentRoute: () => rootRoute,
 } as any)
 
-const LoginRoute = LoginImport.update({
-  id: '/login',
-  path: '/login',
+const SigninRoute = SigninImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MailRoute = MailImport.update({
+  id: '/mail',
+  path: '/mail',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -44,16 +57,10 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const MailIndexRoute = MailIndexImport.update({
-  id: '/mail/',
-  path: '/mail/',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const MailInboxRoute = MailInboxImport.update({
-  id: '/mail/inbox',
-  path: '/mail/inbox',
-  getParentRoute: () => rootRoute,
+  id: '/inbox',
+  path: '/inbox',
+  getParentRoute: () => MailRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -67,11 +74,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
+    '/mail': {
+      id: '/mail'
+      path: '/mail'
+      fullPath: '/mail'
+      preLoaderRoute: typeof MailImport
+      parentRoute: typeof rootRoute
+    }
+    '/signin': {
+      id: '/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninImport
       parentRoute: typeof rootRoute
     }
     '/signup': {
@@ -79,6 +93,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupImport
+      parentRoute: typeof rootRoute
+    }
+    '/sso-callback': {
+      id: '/sso-callback'
+      path: '/sso-callback'
+      fullPath: '/sso-callback'
+      preLoaderRoute: typeof SsoCallbackImport
       parentRoute: typeof rootRoute
     }
     '/tos': {
@@ -90,83 +111,104 @@ declare module '@tanstack/react-router' {
     }
     '/mail/inbox': {
       id: '/mail/inbox'
-      path: '/mail/inbox'
+      path: '/inbox'
       fullPath: '/mail/inbox'
       preLoaderRoute: typeof MailInboxImport
-      parentRoute: typeof rootRoute
-    }
-    '/mail/': {
-      id: '/mail/'
-      path: '/mail'
-      fullPath: '/mail'
-      preLoaderRoute: typeof MailIndexImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof MailImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface MailRouteChildren {
+  MailInboxRoute: typeof MailInboxRoute
+}
+
+const MailRouteChildren: MailRouteChildren = {
+  MailInboxRoute: MailInboxRoute,
+}
+
+const MailRouteWithChildren = MailRoute._addFileChildren(MailRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/login': typeof LoginRoute
+  '/mail': typeof MailRouteWithChildren
+  '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/sso-callback': typeof SsoCallbackRoute
   '/tos': typeof TosRoute
   '/mail/inbox': typeof MailInboxRoute
-  '/mail': typeof MailIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/login': typeof LoginRoute
+  '/mail': typeof MailRouteWithChildren
+  '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/sso-callback': typeof SsoCallbackRoute
   '/tos': typeof TosRoute
   '/mail/inbox': typeof MailInboxRoute
-  '/mail': typeof MailIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/login': typeof LoginRoute
+  '/mail': typeof MailRouteWithChildren
+  '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/sso-callback': typeof SsoCallbackRoute
   '/tos': typeof TosRoute
   '/mail/inbox': typeof MailInboxRoute
-  '/mail/': typeof MailIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup' | '/tos' | '/mail/inbox' | '/mail'
+  fullPaths:
+    | '/'
+    | '/mail'
+    | '/signin'
+    | '/signup'
+    | '/sso-callback'
+    | '/tos'
+    | '/mail/inbox'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/tos' | '/mail/inbox' | '/mail'
+  to:
+    | '/'
+    | '/mail'
+    | '/signin'
+    | '/signup'
+    | '/sso-callback'
+    | '/tos'
+    | '/mail/inbox'
   id:
     | '__root__'
     | '/'
-    | '/login'
+    | '/mail'
+    | '/signin'
     | '/signup'
+    | '/sso-callback'
     | '/tos'
     | '/mail/inbox'
-    | '/mail/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LoginRoute: typeof LoginRoute
+  MailRoute: typeof MailRouteWithChildren
+  SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
+  SsoCallbackRoute: typeof SsoCallbackRoute
   TosRoute: typeof TosRoute
-  MailInboxRoute: typeof MailInboxRoute
-  MailIndexRoute: typeof MailIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LoginRoute: LoginRoute,
+  MailRoute: MailRouteWithChildren,
+  SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
+  SsoCallbackRoute: SsoCallbackRoute,
   TosRoute: TosRoute,
-  MailInboxRoute: MailInboxRoute,
-  MailIndexRoute: MailIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -180,30 +222,37 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/login",
+        "/mail",
+        "/signin",
         "/signup",
-        "/tos",
-        "/mail/inbox",
-        "/mail/"
+        "/sso-callback",
+        "/tos"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/login": {
-      "filePath": "login.tsx"
+    "/mail": {
+      "filePath": "mail.tsx",
+      "children": [
+        "/mail/inbox"
+      ]
+    },
+    "/signin": {
+      "filePath": "signin.tsx"
     },
     "/signup": {
       "filePath": "signup.tsx"
+    },
+    "/sso-callback": {
+      "filePath": "sso-callback.tsx"
     },
     "/tos": {
       "filePath": "tos.tsx"
     },
     "/mail/inbox": {
-      "filePath": "mail/inbox.tsx"
-    },
-    "/mail/": {
-      "filePath": "mail/index.tsx"
+      "filePath": "mail/inbox.tsx",
+      "parent": "/mail"
     }
   }
 }

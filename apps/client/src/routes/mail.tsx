@@ -4,7 +4,7 @@ import { EmailLabel } from "@/types";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { SearchIcon } from "lucide-react";
 
-export const Route = createFileRoute("/mail/")({
+export const Route = createFileRoute("/mail")({
   component: () => {
     const labels: EmailLabel[] = [
       { id: "work", name: "Work", color: "#3b82f6" },
