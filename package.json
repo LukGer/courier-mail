@@ -1,5 +1,5 @@
 {
-  "name": "my-turborepo",
+  "name": "courier-mail",
   "private": true,
   "scripts": {
     "build": "turbo run build",
