@@ -1,17 +1,23 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "stoker/http-status-codes";
 import { jsonContent } from "stoker/openapi/helpers";
-import { threadSchema } from "./threads.schema";
+import { threadsResponseSchema } from "./threads.schema";
 
 export const query = createRoute({
   path: "/threads/query",
   method: "get",
-  tags: ["Threads"],
+  request: {
+    query: z.object({
+      start: z.number(),
+      maxResults: z.number(),
+    }),
+  },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
-      z.array(threadSchema),
+      threadsResponseSchema,
       "The list of threads"
     ),
+    [HttpStatusCodes.UNAUTHORIZED]: jsonContent(z.string(), "Unauthorized"),
   },
 });
 

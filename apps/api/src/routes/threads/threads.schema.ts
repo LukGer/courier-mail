@@ -1,3 +1,9 @@
 import { z } from "zod";
 
-export const threadSchema = z.any();
+export const threadsResponseSchema = z.array(
+  z.object({
+    id: z.string(),
+    snippet: z.string(),
+    historyId: z.string(),
+  })
+);

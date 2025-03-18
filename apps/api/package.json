@@ -1,9 +1,11 @@
 {
-  "name": "api",
+  "name": "@repo/api",
   "scripts": {
     "start": "bun run --hot src/index.ts"
   },
   "dependencies": {
+    "@clerk/backend": "^1.25.2",
+    "@hono/clerk-auth": "^2.0.0",
     "@hono/zod-openapi": "^0.19.2",
     "@scalar/hono-api-reference": "^0.7.1",
     "googleapis": "^146.0.0",
