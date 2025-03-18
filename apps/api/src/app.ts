@@ -1,12 +1,12 @@
 import configureOpenAPI from "@/lib/configure-open-api";
 import createApp from "@/lib/create-app";
-import emails from "@/routes/emails/emails.index";
+import threads from "@/routes/threads/threads.index";
 
 const app = createApp();
 
 configureOpenAPI(app);
 
-const routes = [emails] as const;
+const routes = [threads] as const;
 type Routes = typeof routes;
 export type AppType = Routes[number];
 

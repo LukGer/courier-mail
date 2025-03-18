@@ -1,7 +1,9 @@
 import type { OpenAPIHono, RouteConfig, RouteHandler } from "@hono/zod-openapi";
 
 export interface AppBindings {
-  Variables: {};
+  Variables: {
+    token: string;
+  };
 }
 
 export type AppOpenAPI = OpenAPIHono<AppBindings>;
