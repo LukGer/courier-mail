@@ -3,8 +3,12 @@ import { RouterProvider } from "@tanstack/react-router";
 import router from "./router";
 
 const App = () => {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, isLoaded } = useAuth();
   const auth = useClerk();
+
+  if (!isLoaded) {
+    return null;
+  }
 
   return <RouterProvider router={router} context={{ isSignedIn, auth }} />;
 };
