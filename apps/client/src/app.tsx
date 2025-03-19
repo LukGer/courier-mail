@@ -7,7 +7,7 @@ const App = () => {
   const auth = useClerk();
 
   if (!isLoaded) {
-    return null;
+    return <div>Loading...</div>;
   }
 
   return <RouterProvider router={router} context={{ isSignedIn, auth }} />;

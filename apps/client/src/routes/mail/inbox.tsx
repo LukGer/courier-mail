@@ -1,5 +1,6 @@
+import { db } from "@/db";
+import { DbThread } from "@/db/schema";
 import { authenticatedGuard } from "@/lib/auth";
-import { useAuth } from "@clerk/clerk-react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
@@ -9,22 +10,21 @@ export const Route = createFileRoute("/mail/inbox")({
 });
 
 function Index() {
-  const { getToken } = useAuth();
-
-  const [token, setToken] = useState<string | null>(null);
+  const [threads, setThreads] = useState<DbThread[]>([]);
 
   useEffect(() => {
-    const fetchToken = async () => {
-      const token = await getToken();
-      setToken(token);
-    };
+    async function fetchMails() {
+      const threads = await db.query.thread.findMany();
 
-    fetchToken();
-  }, [getToken]);
+      setThreads(threads);
+    }
+
+    fetchMails();
+  }, []);
 
   return (
     <div className="p-2">
-      <pre className="w-2/3">Bearer {token}</pre>
+      <pre className="w-2/3">{JSON.stringify(threads)}</pre>
     </div>
   );
 }
